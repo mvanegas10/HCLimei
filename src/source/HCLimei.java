@@ -1,8 +1,11 @@
 package source;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Meili on 9/2/16.
@@ -18,7 +21,7 @@ public class HCLimei {
     private JLabel criterioLabel;
     private JButton crearPacienteButton;
     private JTabbedPane manejadorTabs;
-    private JButton button1;
+    private JButton buscarPacienteButton;
     private JPanel busquedaPanel;
     private JPanel inicioPanel;
     private JPanel detallePacientePanel;
@@ -29,7 +32,7 @@ public class HCLimei {
     private JLabel segundoNombreLabel;
     private JTextField segundoNombreText;
     private JTextField primerNombreText;
-    private JTextField textField1;
+    private JTextField primerApellidoText;
     private JLabel segundoApellidoLabel;
     private JTextField segundoApellidoText;
     private JTextField fechaNacimientoText;
@@ -45,7 +48,7 @@ public class HCLimei {
     private JLabel municipioNacimientoLabel;
     private JLabel departamentoNacimientoLabel;
     private JTextField departamentoText;
-    private JTextField textField2;
+    private JTextField direccionText;
     private JLabel direccionLabel;
     private JTextField telefonoText;
     private JLabel telefonoLabel;
@@ -64,7 +67,7 @@ public class HCLimei {
     private JTextField rhText;
     private JLabel rhLabel;
     private JTextField captacionText;
-    private JTextField textField3;
+    private JTextField textoABuscarText;
     private JPanel consultaPanel;
     private JTextArea motivoConsultaText;
     private JTextArea enferemedadActualText;
@@ -74,15 +77,53 @@ public class HCLimei {
     private JTextArea antecedentesPersonalesText;
     private JLabel antecedentesFamiliaresLabel;
     private JTextArea antecedentesFamiliaresText;
-    private JList list1;
     private JLabel motivoYAntecedentesLabel;
     private JLabel generarRIPSLabel;
     private JLabel buscarPacienteLabel;
-    private JButton buscarPacienteButton;
+    private JButton buscarPacienteInicioButton;
     private JButton generarRIPSButton;
+    private JScrollPane scrollerLista;
+    private JList listaResultadosList;
+    private JButton verPacienteButton;
+    private JButton iniciarConsultaButton;
+    private JPanel vistaPacientePanel;
+    private JPanel tituloPacientePanel;
+    //    private JScrollPane scrollerLista;
+//    private JList listaResultadosList;
 
-    public HCLimei() {
+    private Main main;
+
+    public JPanel getPanel1() {
+        return panel1;
+    }
+
+    public void verDetallePaciente(Paciente paciente) {
+        manejadorTabs.setSelectedComponent(detallePacientePanel);
+        tipoIdentificacionText.setText(paciente.getTipoDocumento());
+        identificacionText.setText(paciente.getNumeroDocumento());
+        primerNombreText.setText(paciente.getPrimerNombre());
+        segundoNombreText.setText(paciente.getSegundoNombre());
+        primerApellidoText.setText(paciente.getPrimerApellido());
+        segundoApellidoText.setText(paciente.getSegundoApellido());
+        fechaNacimientoText.setText(paciente.getFechaNacimiento());
+        generoText.setText(paciente.getSexo());
+        direccionText.setText(paciente.getDireccion());
+        telefonoText.setText(paciente.getTelefono());
+        celularText.setText(paciente.getCelular());
+        mailText.setText(paciente.getMail());
+        acompañanteText.setText(paciente.getAcompaniante());
+        telefonoAcompañanteText.setText(paciente.getTelAcompaniante());
+    }
+
+    public HCLimei(Main main) {
+        this.main = main;
         consultaControlButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                manejadorTabs.setSelectedComponent(busquedaPanel);
+            }
+        });
+        buscarPacienteInicioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 manejadorTabs.setSelectedComponent(busquedaPanel);
@@ -91,16 +132,36 @@ public class HCLimei {
         buscarPacienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                manejadorTabs.setSelectedComponent(busquedaPanel);
+                Object[] pacientes = main.buscarPaciente(textoABuscarText.getText(),String.valueOf(
+                        criterioBusquedaComboBox.getSelectedItem()));
+
+                DefaultListModel respuesta = new DefaultListModel();
+                for (Object paciente : pacientes) {
+                    respuesta.addElement(paciente);
+                }
+                listaResultadosList.setModel(respuesta);
+            }
+        });
+        verPacienteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String paciente = String.valueOf(listaResultadosList.getSelectedValue());
+                String separador = "\t\t\t\t\t\t\t\t";
+                String[] datos = paciente.split(separador);
+                verDetallePaciente(main.verPaciente(datos[0]));
             }
         });
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("HCLimei");
-        frame.setContentPane(new HCLimei().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        String[] criterios = {"Nombre","Identificación"};
+        DefaultListModel modelo = new DefaultListModel();
+        criterioBusquedaComboBox = new JComboBox(criterios);
+        listaResultadosList = new JList(modelo);
+        listaResultadosList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        listaResultadosList.setLayoutOrientation(JList.VERTICAL);
+        listaResultadosList.setVisibleRowCount(-1);
+        scrollerLista = new JScrollPane(listaResultadosList);
     }
 }
