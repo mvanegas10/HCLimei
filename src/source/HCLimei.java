@@ -1,11 +1,9 @@
 package source;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by Meili on 9/2/16.
@@ -68,7 +66,7 @@ public class HCLimei {
     private JLabel rhLabel;
     private JTextField captacionText;
     private JTextField textoABuscarText;
-    private JPanel consultaPanel;
+    private JPanel motivoYAntecedentesPanel;
     private JTextArea motivoConsultaText;
     private JTextArea enferemedadActualText;
     private JLabel motivoConsultaLabel;
@@ -77,7 +75,6 @@ public class HCLimei {
     private JTextArea antecedentesPersonalesText;
     private JLabel antecedentesFamiliaresLabel;
     private JTextArea antecedentesFamiliaresText;
-    private JLabel motivoYAntecedentesLabel;
     private JLabel generarRIPSLabel;
     private JLabel buscarPacienteLabel;
     private JButton buscarPacienteInicioButton;
@@ -87,9 +84,58 @@ public class HCLimei {
     private JButton verPacienteButton;
     private JButton iniciarConsultaButton;
     private JPanel vistaPacientePanel;
-    private JPanel tituloPacientePanel;
-    //    private JScrollPane scrollerLista;
-//    private JList listaResultadosList;
+    private JLabel tituloPacienteLabel;
+    private JButton iniciarConsultaDetalleButton;
+    private JButton editarInformacionButton;
+    private JTabbedPane consultaPanel;
+    private JPanel datosPacientePanel;
+    private JButton continuarMotivoButton;
+    private JLabel primerNombreLabel1;
+    private JLabel primerApellidoLabel1;
+    private JLabel fechaNacimientoLabel1;
+    private JLabel segundoNombreLabel1;
+    private JTextField ingresoSegundoNombreText;
+    private JTextField ingresoPrimerApellidoText;
+    private JLabel segundoApellidoLabel1;
+    private JTextField ingresoSegundoApellidoText;
+    private JTextField ingresoTipoIdentificacionText;
+    private JLabel identificacionLabel1;
+    private JTextField ingresoIdentificacionText;
+    private JLabel generoLabel1;
+    private JTextField ingresoFechaNacimientoText;
+    private JTextField ingresoGeneroText;
+    private JLabel profesionLabel1;
+    private JTextField ingresoProfesionText;
+    private JLabel departamentoLabel1;
+    private JTextField ingresoPrimerNombreText;
+    private JLabel municipioLabel1;
+    private JLabel tipoIdentificacionLabel1;
+    private JTextField ingresoDepartamentoText;
+    private JTextField ingresoDireccionText;
+    private JLabel direccionLabel1;
+    private JTextField ingresoTelefonoText;
+    private JLabel telefonoLabel1;
+    private JLabel celularLabel1;
+    private JTextField ingresoCelularText;
+    private JLabel mailLabel1;
+    private JTextField ingresoMailText;
+    private JTextField ingresoMunicipioText;
+    private JLabel responsableLabel1;
+    private JTextField ingresoResponsableText;
+    private JLabel parentescoLabel1;
+    private JTextField ingresoParentescoText;
+    private JTextField ingresoTelAcompañanteText;
+    private JLabel telAcompañanteLabel1;
+    private JLabel captacionLabel1;
+    private JTextField ingresoRHText;
+    private JLabel rhLabel1;
+    private JTextField ingresoCaptacionText;
+    private JButton continuarRevisionButton;
+    private JPanel revisionPanel;
+    private JPanel sintomasPanel;
+    private JButton guardarInformacionButton;
+
+    private ArrayList<JTextField> detallePacienteTexts;
 
     private Main main;
 
@@ -98,7 +144,13 @@ public class HCLimei {
     }
 
     public void verDetallePaciente(Paciente paciente) {
-        manejadorTabs.setSelectedComponent(detallePacientePanel);
+
+
+        String titulo = (paciente.getSegundoApellido() != null)? paciente.getPrimerNombre() + " " +  paciente.getSegundoNombre() + " "
+                + paciente.getPrimerApellido() + " " + paciente.getSegundoApellido(): paciente.getPrimerNombre() + " " +
+                paciente.getPrimerApellido() + " " + paciente.getSegundoApellido();
+        tituloPacienteLabel.setText(titulo);
+        manejadorTabs.setSelectedComponent(vistaPacientePanel);
         tipoIdentificacionText.setText(paciente.getTipoDocumento());
         identificacionText.setText(paciente.getNumeroDocumento());
         primerNombreText.setText(paciente.getPrimerNombre());
@@ -113,10 +165,38 @@ public class HCLimei {
         mailText.setText(paciente.getMail());
         acompañanteText.setText(paciente.getAcompaniante());
         telefonoAcompañanteText.setText(paciente.getTelAcompaniante());
+
+        for (JTextField text : detallePacienteTexts) {
+            text.setEnabled(false);
+        }
     }
 
     public HCLimei(Main main) {
         this.main = main;
+        this.detallePacienteTexts = new ArrayList<>();
+        this.detallePacienteTexts.add(tipoIdentificacionText);
+        this.detallePacienteTexts.add(identificacionText);
+        this.detallePacienteTexts.add(primerNombreText);
+        this.detallePacienteTexts.add(segundoNombreText);
+        this.detallePacienteTexts.add(primerApellidoText);
+        this.detallePacienteTexts.add(segundoApellidoText);
+        this.detallePacienteTexts.add(fechaNacimientoText);
+        this.detallePacienteTexts.add(edadText);
+        this.detallePacienteTexts.add(generoText);
+        this.detallePacienteTexts.add(profesionText);
+        this.detallePacienteTexts.add(municipioText);
+        this.detallePacienteTexts.add(departamentoText);
+        this.detallePacienteTexts.add(direccionText);
+        this.detallePacienteTexts.add(direccionText);
+        this.detallePacienteTexts.add(telefonoText);
+        this.detallePacienteTexts.add(celularText);
+        this.detallePacienteTexts.add(mailText);
+        this.detallePacienteTexts.add(acompañanteText);
+        this.detallePacienteTexts.add(parentescoText);
+        this.detallePacienteTexts.add(telefonoAcompañanteText);
+        this.detallePacienteTexts.add(captacionText);
+        this.detallePacienteTexts.add(rhText);
+
         consultaControlButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,6 +231,45 @@ public class HCLimei {
                 verDetallePaciente(main.verPaciente(datos[0]));
             }
         });
+        editarInformacionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (JTextField text : detallePacienteTexts) {
+                    consultaPanel.setSelectedComponent(datosPacientePanel);
+                    text.setEnabled(true);
+                    editarInformacionButton.setVisible(false);
+                    guardarInformacionButton.setVisible(true);
+                }
+            }
+        });
+        crearPacienteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                manejadorTabs.setSelectedComponent(consultaPanel);
+            }
+        });
+        continuarMotivoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                consultaPanel.setSelectedComponent(motivoYAntecedentesPanel);
+            }
+        });
+        continuarRevisionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                consultaPanel.setSelectedComponent(revisionPanel);
+            }
+        });
+        guardarInformacionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (JTextField text : detallePacienteTexts) {
+                    text.setEnabled(false);
+                }
+                editarInformacionButton.setVisible(true);
+                guardarInformacionButton.setVisible(false);
+            }
+        });
     }
 
     private void createUIComponents() {
@@ -163,5 +282,7 @@ public class HCLimei {
         listaResultadosList.setLayoutOrientation(JList.VERTICAL);
         listaResultadosList.setVisibleRowCount(-1);
         scrollerLista = new JScrollPane(listaResultadosList);
+        guardarInformacionButton = new JButton("Guardad información");
+        guardarInformacionButton.setVisible(false);
     }
 }
