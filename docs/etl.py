@@ -4,6 +4,7 @@ rfd = '/home/meili/Downloads/backup_db2016-12-27.sql'
 wfd = '/home/meili/Downloads/backup.sql'
 
 reader = codecs.open(rfd,'r','utf-8')
+
 writer = codecs.open(wfd,'w','utf-8')
 
 for rline in reader:
