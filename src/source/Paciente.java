@@ -144,7 +144,7 @@ public class Paciente {
 	}
 
 	public Paciente(String id, String tipoIdentificacion,String numIdentificacion,String fechaNacimiento,String nombre1,String nombre2,String apellido1,String apellido2,
-					String genero,String direccion,String telefono,String celular,String mail, String acompaniante, String telAcompaniante){
+					String genero,String naturalDe, String procedenteDe, String direccion,String telefono,String celular,String mail, String acompaniante, String telAcompaniante){
 		this.idPaciente = id;
 		this.tipoDocumento = tipoIdentificacion;
 		this.numeroDocumento = numIdentificacion;
@@ -154,6 +154,8 @@ public class Paciente {
 		this.primerApellido = apellido1;
 		this.segundoApellido = apellido2;
 		this.sexo = genero;
+		this.naturalDe = naturalDe;
+		this.procedenteDe = procedenteDe;
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.celular = celular;

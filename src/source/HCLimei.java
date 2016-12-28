@@ -45,7 +45,7 @@ public class HCLimei {
     private JTextField profesionText;
     private JLabel municipioNacimientoLabel;
     private JLabel departamentoNacimientoLabel;
-    private JTextField departamentoText;
+    private JTextField procedenteDeText;
     private JTextField direccionText;
     private JLabel direccionLabel;
     private JTextField telefonoText;
@@ -159,6 +159,7 @@ public class HCLimei {
         segundoApellidoText.setText(paciente.getSegundoApellido());
         fechaNacimientoText.setText(paciente.getFechaNacimiento());
         generoText.setText(paciente.getSexo());
+        municipioText.setText(paciente.getNaturalDe());
         direccionText.setText(paciente.getDireccion());
         telefonoText.setText(paciente.getTelefono());
         celularText.setText(paciente.getCelular());
@@ -185,7 +186,7 @@ public class HCLimei {
         this.detallePacienteTexts.add(generoText);
         this.detallePacienteTexts.add(profesionText);
         this.detallePacienteTexts.add(municipioText);
-        this.detallePacienteTexts.add(departamentoText);
+        this.detallePacienteTexts.add(procedenteDeText);
         this.detallePacienteTexts.add(direccionText);
         this.detallePacienteTexts.add(direccionText);
         this.detallePacienteTexts.add(telefonoText);

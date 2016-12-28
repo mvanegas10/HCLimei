@@ -385,7 +385,7 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <text value="Departamento de nacimiento:"/>
+                      <text value="Procedente de:"/>
                     </properties>
                   </component>
                   <component id="d55f" class="javax.swing.JTextField" binding="primerNombreText">
@@ -403,7 +403,7 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                     <properties>
-                      <text value="Municipio de nacimiento:"/>
+                      <text value="Natural de:"/>
                     </properties>
                   </component>
                   <component id="2348d" class="javax.swing.JLabel" binding="tipoIdentificacionLabel">
@@ -415,7 +415,7 @@
                       <text value="Tipo de identificación:"/>
                     </properties>
                   </component>
-                  <component id="b3518" class="javax.swing.JTextField" binding="departamentoText">
+                  <component id="b3518" class="javax.swing.JTextField" binding="procedenteDeText">
                     <constraints>
                       <grid row="7" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -526,7 +526,7 @@
                       <gridbag weightx="0.0" weighty="0.0"/>
                     </constraints>
                   </hspacer>
-                  <component id="72cdc" class="javax.swing.JTextField" binding="municipioText">
+                  <component id="72cdc" class="javax.swing.JTextField" binding="naturalDeText">
                     <constraints>
                       <grid row="7" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>

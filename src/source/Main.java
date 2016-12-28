@@ -11,6 +11,7 @@ import java.util.Properties;
 public class Main {
 
 	private static String userName;
+	private static String password;
 	private static Connection conn;
 	private static String database;
 
@@ -28,6 +29,7 @@ public class Main {
 		Connection conn = null;
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", userName);
+		connectionProps.put("password", password);
 
 		conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database, connectionProps);
 		System.out.println("Connected to database " + database);
@@ -50,6 +52,8 @@ public class Main {
 				String apellido1 = r.getString(7);
 				String apellido2 = r.getString(8);
 				String genero = r.getString(9);
+				String naturalDe = r.getString(16);
+				String procedenteDe = r.getString(17);
 				String direccion = r.getString(18);
 				String telefono = r.getString(19);
 				String celular = r.getString(20);
@@ -57,7 +61,7 @@ public class Main {
 				String acompañante = r.getString(33);
 				String telAcompañante = r.getString(35);
 				paciente = new Paciente(id, tipoIdentificacion,numIdentificacion,fechaNacimiento,nombre1,nombre2,apellido1,apellido2,
-						genero,direccion,telefono,celular,mail,acompañante,telAcompañante);
+						genero,naturalDe,procedenteDe,direccion,telefono,celular,mail,acompañante,telAcompañante);
 				return paciente;
 			}
 			r.close();
@@ -104,7 +108,8 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		userName = "hclimeiadmin";
+		userName = "root";
+		password = "1234";
 		database = "hclimei";
 		try {
 			conn = getConnection();
