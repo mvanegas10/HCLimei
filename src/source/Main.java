@@ -136,15 +136,14 @@ public class Main {
 		try {
 			conn = getConnection();
 
-//			Process p = new ProcessBuilder("postgres -D /usr/local/var/postgres").start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		Main _this = new Main();
 
-		JFrame frame = new JFrame("HCLimei");
-		frame.setContentPane(new HCLimei(_this).getPanel1());
+ 		JFrame frame = new JFrame("HCLimeiFrame");
+		frame.setContentPane(new HCLimeiFrame(_this).getGroupPanel());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
