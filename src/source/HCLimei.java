@@ -1,9 +1,12 @@
 package source;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Meili on 9/2/16.
@@ -79,10 +82,7 @@ public class HCLimei {
     private JLabel buscarPacienteLabel;
     private JButton buscarPacienteInicioButton;
     private JButton generarRIPSButton;
-    private JScrollPane scrollerLista;
-    private JList listaResultadosList;
     private JButton verPacienteButton;
-    private JButton iniciarConsultaButton;
     private JPanel vistaPacientePanel;
     private JLabel tituloPacienteLabel;
     private JButton iniciarConsultaDetalleButton;
@@ -134,7 +134,14 @@ public class HCLimei {
     private JPanel revisionPanel;
     private JPanel sintomasPanel;
     private JButton guardarInformacionButton;
-
+    private JTextField naturalDeText;
+    private JLabel citasLabel;
+    private JTable tablaCitas;
+    private JScrollPane scrollerTable;
+    private JTable tablaBusqueda;
+    private JScrollPane scrollerBusqueda;
+    private DefaultTableModel tableModel;
+    private DefaultTableModel tableModelBusqueda;
     private ArrayList<JTextField> detallePacienteTexts;
 
     private Main main;
@@ -159,7 +166,8 @@ public class HCLimei {
         segundoApellidoText.setText(paciente.getSegundoApellido());
         fechaNacimientoText.setText(paciente.getFechaNacimiento());
         generoText.setText(paciente.getSexo());
-        municipioText.setText(paciente.getNaturalDe());
+        naturalDeText.setText(paciente.getNaturalDe());
+        procedenteDeText.setText(paciente.getProcedenteDe());
         direccionText.setText(paciente.getDireccion());
         telefonoText.setText(paciente.getTelefono());
         celularText.setText(paciente.getCelular());
@@ -167,9 +175,45 @@ public class HCLimei {
         acompañanteText.setText(paciente.getAcompaniante());
         telefonoAcompañanteText.setText(paciente.getTelAcompaniante());
 
+        tableModel = new DefaultTableModel();
+        tablaCitas.setModel(tableModel);
+
+        ArrayList<Consulta> citas = main.darCitasPaciente(paciente);
+
+        String[] colName = {"Fecha","Motivo","Descripcion"};
+
+        tableModel.setColumnIdentifiers(colName);
+        for (Consulta consulta : citas) {
+            String data[] = new String[3];
+            data[0] = consulta.getFecha();
+            data[1] = consulta.getMotivoConsulta();
+            data[2] = consulta.getDescripcion();
+            tableModel.addRow(data);
+        }
+        tablaCitas.setModel(tableModel);
+        tablaCitas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tablaCitas.getColumnModel().getColumn(0).setPreferredWidth(120);
+        tablaCitas.getColumnModel().getColumn(1).setMinWidth(400);
+        tablaCitas.getColumnModel().getColumn(2).setMinWidth(5000);
+
+        MouseListener tableMouseListener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Object selected = tableModel.getValueAt(tablaCitas.getSelectedRow(),0);
+                System.out.println(selected);
+            }
+        };
+
+        tablaCitas.addMouseListener(tableMouseListener);
+
         for (JTextField text : detallePacienteTexts) {
             text.setEnabled(false);
         }
+        DefaultListModel respuesta = new DefaultListModel();
+        for (Object cita : citas) {
+            respuesta.addElement(cita);
+        }
+        citasLabel.setText("Número de citas atendidas: " + citas.size());
     }
 
     public HCLimei(Main main) {
@@ -185,7 +229,7 @@ public class HCLimei {
         this.detallePacienteTexts.add(edadText);
         this.detallePacienteTexts.add(generoText);
         this.detallePacienteTexts.add(profesionText);
-        this.detallePacienteTexts.add(municipioText);
+        this.detallePacienteTexts.add(naturalDeText);
         this.detallePacienteTexts.add(procedenteDeText);
         this.detallePacienteTexts.add(direccionText);
         this.detallePacienteTexts.add(direccionText);
@@ -213,23 +257,36 @@ public class HCLimei {
         buscarPacienteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object[] pacientes = main.buscarPaciente(textoABuscarText.getText(),String.valueOf(
+                tableModelBusqueda = new DefaultTableModel();
+                tablaBusqueda.setModel(tableModelBusqueda);
+                ArrayList<Paciente> pacientes = main.buscarPaciente(textoABuscarText.getText(),String.valueOf(
                         criterioBusquedaComboBox.getSelectedItem()));
 
-                DefaultListModel respuesta = new DefaultListModel();
-                for (Object paciente : pacientes) {
-                    respuesta.addElement(paciente);
+                String[] colName = {"Id","Documento","Nombre"};
+
+                tableModelBusqueda.setColumnIdentifiers(colName);
+                for (Paciente paciente : pacientes) {
+                    String data[] = new String[3];
+                    data[0] = paciente.getIdPaciente();
+                    data[1] = paciente.getNumeroDocumento();
+                    data[2] = paciente.getPrimerNombre() + " " + paciente.getSegundoNombre() + " " + paciente.getPrimerApellido() + " " + paciente.getSegundoApellido();
+                    tableModelBusqueda.addRow(data);
                 }
-                listaResultadosList.setModel(respuesta);
-            }
-        });
-        verPacienteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String paciente = String.valueOf(listaResultadosList.getSelectedValue());
-                String separador = "\t\t\t\t\t\t\t\t";
-                String[] datos = paciente.split(separador);
-                verDetallePaciente(main.verPaciente(datos[0]));
+                tablaBusqueda.setModel(tableModelBusqueda);
+                tablaBusqueda.getColumnModel().getColumn(0).setPreferredWidth(100);
+                tablaBusqueda.getColumnModel().getColumn(1).setPreferredWidth(200);
+                tablaBusqueda.getColumnModel().getColumn(2).setPreferredWidth(500);
+
+                MouseListener tableMouseListener = new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        String selected = (String) tableModelBusqueda.getValueAt(tablaBusqueda.getSelectedRow(),0);
+                        System.out.println(selected);
+                        verDetallePaciente(main.verPaciente(selected));
+                    }
+                };
+
+                tablaBusqueda.addMouseListener(tableMouseListener);
             }
         });
         editarInformacionButton.addActionListener(new ActionListener() {
@@ -275,15 +332,17 @@ public class HCLimei {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+
         String[] criterios = {"Nombre","Identificación"};
         DefaultListModel modelo = new DefaultListModel();
         criterioBusquedaComboBox = new JComboBox(criterios);
-        listaResultadosList = new JList(modelo);
-        listaResultadosList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-        listaResultadosList.setLayoutOrientation(JList.VERTICAL);
-        listaResultadosList.setVisibleRowCount(-1);
-        scrollerLista = new JScrollPane(listaResultadosList);
-        guardarInformacionButton = new JButton("Guardad información");
+        tablaCitas = new JTable();
+        tablaBusqueda = new JTable();
+        tableModel = (DefaultTableModel) tablaCitas.getModel();
+        tableModelBusqueda = (DefaultTableModel) tablaBusqueda.getModel();
+        scrollerTable = new JScrollPane(tablaCitas, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollerBusqueda = new JScrollPane(tablaBusqueda, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        guardarInformacionButton = new JButton("Guardar información");
         guardarInformacionButton.setVisible(false);
     }
 }

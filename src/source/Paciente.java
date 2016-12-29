@@ -1,7 +1,5 @@
 package source;
 
-import java.util.Date;
-
 public class Paciente {
 
 	/**
@@ -269,6 +267,6 @@ public class Paciente {
 	}
 
 	public String toString(){
-		return idPaciente + "\t\t\t\t\t\t\t\t" + numeroDocumento + "\t\t\t\t\t\t\t\t" + primerNombre + "\t" + segundoNombre + "\t" + primerApellido + "\t" + segundoApellido;
+		return idPaciente + Main.SEPARATOR + numeroDocumento + Main.SEPARATOR + primerNombre + "\t" + segundoNombre + "\t" + primerApellido + "\t" + segundoApellido;
 	}
 }

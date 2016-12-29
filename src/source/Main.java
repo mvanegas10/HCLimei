@@ -1,7 +1,5 @@
 package source;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,6 +7,8 @@ import java.util.Date;
 import java.util.Properties;
 
 public class Main {
+
+	public static String SEPARATOR = "\t\t\t\t\t\t\t\t";
 
 	private static String userName;
 	private static String password;
@@ -72,8 +72,8 @@ public class Main {
 		return paciente;
 	}
 
-	public Object[] buscarPaciente(String textoABuscar, String criterio) {
-		ArrayList<String> pacientes = new ArrayList<>();
+	public ArrayList<Paciente> buscarPaciente(String textoABuscar, String criterio) {
+		ArrayList<Paciente> pacientes = new ArrayList<>();
 		try {
 			Statement s = conn.createStatement();
 			textoABuscar = textoABuscar.trim();
@@ -97,14 +97,36 @@ public class Main {
 				String apellido1 = r.getString(5);
 				String apellido2 = r.getString(6);
 				Paciente paciente = new Paciente(idPaciente,identificacion,nombre1,nombre2,apellido1,apellido2);
-				pacientes.add(paciente.toString());
+				pacientes.add(paciente);
 			}
 			s.close();
 			r.close();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		return pacientes.toArray();
+		return pacientes;
+	}
+
+	public ArrayList<Consulta> darCitasPaciente(Paciente paciente) {
+		ArrayList<Consulta> citas = new ArrayList<>();
+		try {
+			Statement s = conn.createStatement();
+			String query = "SELECT * FROM motivo_consulta WHERE id_paciente = '" + paciente.getIdPaciente() + "' ORDER BY fecha_consulta DESC;";
+			ResultSet r = s.executeQuery(query);
+			while (r.next()) {
+				String fecha = r.getString(4);
+				String idCodigo = r.getString(7);
+				String motivoConsulta = r.getString(2);
+				String descripcion = r.getString(3);
+				Consulta consulta = new Consulta(fecha,paciente,idCodigo,motivoConsulta,descripcion);
+				citas.add(consulta);
+			}
+			s.close();
+			r.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return citas;
 	}
 
 	public static void main(String[] args) {
