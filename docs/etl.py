@@ -41,5 +41,8 @@ writer.write('ALTER TABLE pacientes MODIFY departamento varchar(3);')
 writer.write('ALTER TABLE pacientes MODIFY municipio varchar(10);')
 writer.write('ALTER TABLE pacientes MODIFY rh varchar(4);')
 
+writer.write('ALTER TABLE pacientes ADD ocupacion VARCHAR(200);')
+writer.write('UPDATE pacientes p LEFT JOIN ocupacion o ON p.id_ocupacion = o.id_ocupacion SET p.ocupacion = o.ocupacion;')
+
 reader.close()
 writer.close()
