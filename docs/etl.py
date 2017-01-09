@@ -44,5 +44,48 @@ writer.write('ALTER TABLE pacientes MODIFY rh varchar(4);')
 writer.write('ALTER TABLE pacientes ADD ocupacion VARCHAR(200);')
 writer.write('UPDATE pacientes p LEFT JOIN ocupacion o ON p.id_ocupacion = o.id_ocupacion SET p.ocupacion = o.ocupacion;')
 
+writer.write("# | Vaciado de tabla 'a_patologicos'\nDROP TABLE IF EXISTS `a_patologicos`;\n# | Estructura de la tabla 'a_patologicos'\nSET sql_mode = 'ALLOW_INVALID_DATES';\n CREATE TABLE `a_patologicos` (\n`id_patologicos` bigint(20) unsigned NOT NULL AUTO_INCREMENT,\n`fecha_antecedente` date,\n`id_paciente` bigint(20) unsigned NOT NULL,\n`tipo` text,\n`descripcion` text NOT NULL,\nPRIMARY KEY (`id_patologicos`))ENGINE=InnoDB AUTO_INCREMENT=758 DEFAULT CHARSET=utf8;\n")
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_boca;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'boca' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,cancer as descripcion FROM ap_cancer;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'cancer' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_cardiovascular;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'cardiovascular' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_dermatologicos;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'dermatologicos' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_endocrino;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'endocrino' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_gastrointestinal;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'gastrointestinal' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_genitales;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'genitales' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_ginecologico;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'ginecologico' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_nervioso;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'nervioso' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_oftalmologicos;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'oftalmologicos' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_osteomuscular;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'osteomuscular' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_otorrino;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'otorrino' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_respiratorio;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'respiratorio' WHERE tipo IS NULL;\n")
+
+writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_urinario;\n")
+writer.write("UPDATE a_patologicos SET tipo = 'urinario' WHERE tipo IS NULL;\n")
+
 reader.close()
 writer.close()
