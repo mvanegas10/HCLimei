@@ -13,6 +13,7 @@ for rline in reader:
 		break
 	except:
 		new_line = rline.replace('date NOT NULL', 'date')
+		new_line = rline.replace('NOT NULL', '')
 		new_line = new_line.replace('CREATE TABLE ', "SET sql_mode = 'ALLOW_INVALID_DATES'; \n CREATE TABLE ")
 		# new_line = new_line.replace('CREATE ALGORITHM=UNDEFINED DEFINER=`serapise_serapis`@`localhost`', 'CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost`")
 		new_line = new_line.replace("'0000-00-00'","NULL")
@@ -86,6 +87,35 @@ writer.write("UPDATE a_patologicos SET tipo = 'respiratorio' WHERE tipo IS NULL;
 
 writer.write("INSERT INTO a_patologicos (id_paciente,fecha_antecedente,descripcion) SELECT id_paciente,fecha as fecha_antecedente,otro as descripcion FROM ap_urinario;\n")
 writer.write("UPDATE a_patologicos SET tipo = 'urinario' WHERE tipo IS NULL;\n")
+
+writer.write("ALTER TABLE a_farmacologicos_hospitalarios MODIFY farmacologicos text DEFAULT NULL;")
+writer.write("ALTER TABLE a_farmacologicos_hospitalarios MODIFY hospitalarios text DEFAULT NULL;")
+
+writer.write("ALTER TABLE a_quirurgicos_alergicos MODIFY quirurgicos text DEFAULT NULL;")
+writer.write("ALTER TABLE a_quirurgicos_alergicos MODIFY alergicos text DEFAULT NULL;")
+
+writer.write("ALTER TABLE a_toxicos MODIFY tabaquismo text DEFAULT NULL;")
+writer.write("ALTER TABLE a_toxicos MODIFY alcohol text DEFAULT NULL;")
+writer.write("ALTER TABLE a_toxicos MODIFY drogas text DEFAULT NULL;")
+writer.write("ALTER TABLE a_toxicos MODIFY otro text DEFAULT NULL;")
+
+writer.write("ALTER TABLE a_traumaticos MODIFY traumaticos text DEFAULT NULL;")
+writer.write("ALTER TABLE a_traumaticos MODIFY transfusionales text DEFAULT NULL;")
+
+writer.write("ALTER TABLE a_ginecologicos MODIFY menarquia tinyint(3) unsigned;")
+writer.write("ALTER TABLE a_ginecologicos MODIFY menopausia int(10) unsigned;")
+writer.write("ALTER TABLE a_ginecologicos MODIFY embarazada varchar(3);")
+writer.write("ALTER TABLE a_ginecologicos MODIFY G varchar(5);")
+writer.write("ALTER TABLE a_ginecologicos MODIFY P varchar(5);")
+writer.write("ALTER TABLE a_ginecologicos MODIFY C varchar(5);")
+writer.write("ALTER TABLE a_ginecologicos MODIFY A varchar(5);")
+writer.write("ALTER TABLE a_ginecologicos MODIFY V varchar(5);")
+writer.write("ALTER TABLE a_ginecologicos MODIFY planifica varchar(3);")
+writer.write("ALTER TABLE a_ginecologicos MODIFY texto_planifica varchar(100) DEFAULT 'NO REFIERE';")
+writer.write("ALTER TABLE a_ginecologicos MODIFY otro varchar(200) DEFAULT 'NO REFIERE';")
+writer.write("ALTER TABLE a_ginecologicos MODIFY periodos varchar(45) DEFAULT 'NO REFIERE';")
+writer.write("ALTER TABLE a_ginecologicos MODIFY tiempo varchar(45) DEFAULT 'NO REFIERE';")
+
 
 reader.close()
 writer.close()
