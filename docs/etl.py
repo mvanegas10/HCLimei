@@ -116,6 +116,9 @@ writer.write("ALTER TABLE a_ginecologicos MODIFY otro varchar(200) DEFAULT 'NO R
 writer.write("ALTER TABLE a_ginecologicos MODIFY periodos varchar(45) DEFAULT 'NO REFIERE';\n")
 writer.write("ALTER TABLE a_ginecologicos MODIFY tiempo varchar(45) DEFAULT 'NO REFIERE';\n")
 
+writer.write('ALTER TABLE t_puntos ADD otro_descripcion VARCHAR(200);\n')
+
+
 
 reader.close()
 writer.close()
